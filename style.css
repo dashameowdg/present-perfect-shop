@@ -493,3 +493,12 @@ color: #a0aec0;
 transition: color 0.2s;
 }
 .close-modal-btn:hover { color: #ff7675; }
+
+/* Стиль для новых картинок товаров */
+.product-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Картинка заполнит блок аккуратно, без искажений */
+    border-radius: 14px; /* Красивые округлые края */
+    margin-bottom: 20px;
+}
