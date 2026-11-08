@@ -120,4 +120,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Запускаем первый вопрос при загрузке страницы
     loadQuestion();
+        // ==========================================================================
+    // НАСТРОЙКА РАБОТЫ ФОРМЫ (FORMSPREE ЧЕРЕЗ AJAX)
+    // ==========================================================================
+    const form = document.querySelector(".contact-form");
+    const formStatus = document.getElementById("form-status");
+
+    if (form) {
+        form.addEventListener("submit", async (event) => {
+            // Отменяем стандартную перезагрузку страницы при отправке
+            event.preventDefault(); 
+            
+            // Собираем данные из полей ввода
+            const data = new FormData(event.target);
+            
+            // Выводим сообщение о начале отправки
+            formStatus.style.color = "#2c3e50";
+            formStatus.textContent = "Отправка сообщения...";
+
+            // Отправляем данные на сервер Formspree в фоновом режиме
+            fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    // Если всё ушло успешно — меняем текст на странице
+                    formStatus.style.color = "#2ed573";
+                    formStatus.textContent = "Спасибо! Ваше сообщение успешно отправлено! 🎁";
+                    form.reset(); // Очищаем поля формы
+                } else {
+                    // Если сервер вернул ошибку
+                    response.json().then(data => {
+                        if (Object.hasOwn(data, 'errors')) {
+                            formStatus.textContent = data["errors"].map(error => error["message"]).join(", ");
+                        } else {
+                            formStatus.textContent = "Ой! Возникла проблема при отправке.";
+                        }
+                    });
+                }
+            }).catch(error => {
+                // Если пропал интернет или упал сервер
+                formStatus.style.color = "#ff4757";
+                formStatus.textContent = "Ошибка сети. Проверьте подключение.";
+            });
+        });
+    }
+
 });
