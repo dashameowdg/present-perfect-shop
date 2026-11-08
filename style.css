@@ -64,12 +64,12 @@ section {
 }
 
 /* ==========================================================================
-   1. КНОПКА "НАВЕРХ" (Задание 1)
+   1. КНОПКА "НАВЕРХ" (Задание 1) - ИСПРАВЛЕННАЯ ВЕРСИЯ
    ========================================================================== */
 .scroll-btn {
     position: fixed;
     bottom: 40px;
-    right: -100px;
+    right: 40px; /* Кнопка всегда стоит на своем месте */
     z-index: 99;
     font-size: 1.5rem;
     border: none;
@@ -81,13 +81,26 @@ section {
     height: 54px;
     border-radius: 50%;
     box-shadow: 0 8px 20px rgba(255, 118, 117, 0.3);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* Изначально делаем её полностью прозрачной и кликабельной */
+    opacity: 0;
+    pointer-events: none; 
+    
+    /* Плавное появление */
+    transition: all 0.3s ease;
 }
-.scroll-btn.show { right: 40px; }
+
+/* Когда JS добавляет этот класс, кнопка плавно проявляется */
+.scroll-btn.show { 
+    opacity: 1;
+    pointer-events: auto; /* Делаем её кликабельной */
+}
+
 .scroll-btn:hover { 
     transform: translateY(-4px) scale(1.1);
     background-color: #ff6b81;
 }
+
 
 /* ==========================================================================
    УЮТНАЯ ШАПКА
