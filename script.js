@@ -4,16 +4,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. КНОПКА НАВЕРХ (Задание 1)
     // ==========================================================================
     const scrollTopBtn = document.getElementById("scroll-to-top");
+    
     window.addEventListener("scroll", () => {
+        // Если прокрутили больше 400px — показываем кнопку, иначе — скрываем
         if (window.scrollY > 400) {
-            scrollTopBtn.add("show");
+            scrollTopBtn.classList.add("show"); // Исправлено здесь!
         } else {
             scrollTopBtn.classList.remove("show");
         }
     });
+
     scrollTopBtn.addEventListener("click", () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     });
+
 
     // ==========================================================================
     // 3. АНИМАЦИЯ КАРТОЧЕК ПРИ СКРОЛЛЕ (Задание 3)
