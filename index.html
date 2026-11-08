@@ -3,156 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PresentPerfect — Магазин идеальных подарков</title>
-    <!-- Подключаем файл стилей -->
+    <title>GiftBoom! 🎉 — Магазин ярких подарков</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- Кнопка "Наверх" (Задание 1) -->
+    <button id="scroll-to-top" class="scroll-btn" aria-label="Наверх">🚀</button>
+
     <!-- Шапка сайта -->
     <header class="header">
         <div class="container header-container">
-            <a href="#" class="logo">🎁 PresentPerfect</a>
+            <a href="#" class="logo">🎉 GiftBoom!</a>
             <nav class="nav">
-                <a href="#catalog" class="nav-link">Каталог</a>
-                <a href="#quiz-section" class="nav-link">Подбор подарка</a>
-                <a href="#advantages" class="nav-link">Преимущества</a>
-                <a href="#contacts" class="nav-link">Контакты</a>
+                <a href="#catalog" class="nav-link" data-lang-ru="Каталог" data-lang-en="Catalog">Каталог</a>
+                <a href="#slider-section" class="nav-link" data-lang-ru="Тренды" data-lang-en="Trends">Тренды</a>
+                <a href="#quiz-section" class="nav-link" data-lang-ru="Подбор" data-lang-en="Quiz">Подбор</a>
+                <a href="#contact" class="nav-link" data-lang-ru="Контакты" data-lang-en="Contacts">Контакты</a>
+                <!-- Переключатель языка (Задание 7) -->
+                <button id="lang-toggle" class="lang-btn">🇬🇧 EN</button>
             </nav>
         </div>
     </header>
 
-    <!-- Основной контент -->
     <main>
-        
-        <!-- Секция 1: Главный экран (Hero) -->
+        <!-- Главный экран (Hero) -->
         <section class="hero">
             <div class="container hero-container">
-                <h1 class="hero-title">Найдите идеальный подарок за 1 минуту</h1>
-                <p class="hero-subtitle">Не знаете, что подарить? Пройдите наш быстрый тест, и мы подберем лучшие варианты!</p>
-                <a href="#quiz-section" class="btn btn-primary">Подобрать подарок</a>
+                <h1 class="hero-title" data-lang-ru="Взрывные подарки для любимых! 💥" data-lang-en="Explosive gifts for everyone! 💥">Взрывные подарки для любимых! 💥</h1>
+                <p class="hero-subtitle" data-lang-ru="Хватит дарить скучные носки! Пройди тест и найди подарок-бомбу за 1 минуту!" data-lang-en="Stop giving boring socks! Take the quiz and find a bomb gift in 1 minute!">Хватит дарить скучные носки! Пройди тест и найди подарок-бомбу за 1 минуту!</p>
+                <a href="#quiz-section" class="btn btn-primary" data-lang-ru="Погнать к тесту! 🎯" data-lang-en="Start Quiz! 🎯">Погнать к тесту! 🎯</a>
             </div>
         </section>
 
-        <!-- Секция 2: Каталог товаров (Преимущества/Товары) -->
+        <!-- Каталог товаров с поиском (Задание 8) и анимацией (Задание 3) -->
         <section id="catalog" class="catalog">
             <div class="container">
-                <h2 class="section-title">Популярные категории</h2>
+                <h2 class="section-title" data-lang-ru="🔥 Мега Категории" data-lang-en="🔥 Mega Categories">🔥 Мега Категории</h2>
+                
+                <!-- Живой поиск (Задание 8) -->
+                <div class="search-container">
+                    <input type="text" id="catalog-search" placeholder="Поиск подарка по названию..." data-lang-placeholder-ru="Поиск подарка по названию..." data-lang-placeholder-en="Search gifts by name...">
+                </div>
+
                 <div class="catalog-grid">
-                    <!-- Карточка 1 -->
-                    <div class="product-card">
+                    <div class="product-card scroll-animate" data-title="набор уютный вечер">
                         <div class="product-badge">Хит</div>
-                        <div class="product-img-placeholder">📸 Подарочный набор</div>
+                        <div class="product-img-placeholder">💝</div>
                         <h3 class="product-title">Набор "Уютный вечер"</h3>
                         <p class="product-price">2 490 ₽</p>
-                        <button class="btn btn-secondary">В корзину</button>
+                        <button class="btn btn-secondary open-modal-btn" data-gift="cozy">Подробнее 👀</button>
                     </div>
-                    <!-- Карточка 2 -->
-                    <div class="product-card">
-                        <div class="product-img-placeholder">📸 Эмоции</div>
+                    <div class="product-card scroll-animate" data-title="сертификат впечатление полет">
+                        <div class="product-badge">Вау</div>
+                        <div class="product-img-placeholder">🚀</div>
                         <h3 class="product-title">Сертификат на впечатление</h3>
                         <p class="product-price">3 500 ₽</p>
-                        <button class="btn btn-secondary">В корзину</button>
+                        <button class="btn btn-secondary open-modal-btn" data-gift="active">Подробнее 👀</button>
                     </div>
-                    <!-- Карточка 3 -->
-                    <div class="product-card">
-                        <div class="product-img-placeholder">📸 Сувениры</div>
+                    <div class="product-card scroll-animate" data-title="именной термостакан">
+                        <div class="product-badge">Топ</div>
+                        <div class="product-img-placeholder">🥤</div>
                         <h3 class="product-title">Именной термостакан</h3>
                         <p class="product-price">1 200 ₽</p>
-                        <button class="btn btn-secondary">В корзину</button>
+                        <button class="btn btn-secondary open-modal-btn" data-gift="style">Подробнее 👀</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Секция 3: Интерактивная викторина (JavaScript-функционал) -->
-        <section id="quiz-section" class="quiz-section">
+        <!-- Слайдер без библиотек (Задание 9) -->
+        <section id="slider-section" class="slider-section">
             <div class="container">
-                <h2 class="section-title">Викторина: Подбор подарка</h2>
-                <div class="quiz-container" id="quiz">
-                    <!-- Сюда JavaScript будет динамически вставлять вопросы -->
-                    <div id="question-container">
-                        <p class="quiz-question" id="question-text">Загрузка вопроса...</p>
-                        <div class="quiz-options" id="options-container">
-                            <!-- Кнопки с ответами появятся тут -->
+                <h2 class="section-title" data-lang-ru="✨ Горячие тренды недели" data-lang-en="✨ Hot trends of the week">✨ Горячие тренды недели</h2>
+                <div class="slider-wrapper">
+                    <button class="slider-arrow prev-btn">‹</button>
+                    <div class="slider-container">
+                        <div class="slider-track">
+                            <div class="slide-item">🔮 Магический шар предсказаний</div>
+                            <div class="slide-item">👾 Настольный мини-автомат</div>
+                            <div class="slide-item">🍫 Огромный бокс киндеров</div>
+                            <div class="slide-item">🍕 Подушка в виде пиццы</div>
                         </div>
                     </div>
-                    <!-- Блок для вывода результата -->
-                    <div id="result-container" class="hidden">
-                        <h3>Идеальный вариант для вас:</h3>
-                        <div id="quiz-result" class="quiz-result-card"></div>
-                        <button class="btn btn-primary" id="restart-btn">Пройти заново</button>
-                    </div>
+                    <button class="slider-arrow next-btn">›</button>
                 </div>
             </div>
         </section>
 
-        <!-- Секция 4: Дополнительная информация / Преимущества -->
-        <section id="advantages" class="advantages">
+        <!-- Интерактивная викторина -->
+        <section id="quiz-section" class="quiz-section">
             <div class="container">
-                <h2 class="section-title">Почему выбирают нас</h2>
-                <div class="advantages-grid">
-                    <div class="adv-item">
-                        <h3>🚀 Быстрая доставка</h3>
-                        <p>Привезем подарок в день заказа по всему городу.</p>
+                <h2 class="section-title" data-lang-ru="🧠 Квиз-генератор подарков" data-lang-en="🧠 Gift Quiz Generator">🧠 Квиз-генератор подарков</h2>
+                <div class="quiz-container" id="quiz">
+                    <div id="question-container">
+                        <p class="quiz-question" id="question-text">Загрузка...</p>
+                        <div class="quiz-options" id="options-container"></div>
                     </div>
-                    <div class="adv-item">
-                        <h3>💝 Стильная упаковка</h3>
-                        <p>Каждый заказ бесплатно упаковывается в красивую коробку.</p>
-                    </div>
-                    <div class="adv-item">
-                        <h3>🔮 Уникальный подбор</h3>
-                        <p>Наша умная система всегда угадывает желания.</p>
+                    <div id="result-container" class="hidden">
+                        <h3 data-lang-ru="Твой идеальный подарок-бомба:" data-lang-en="Your perfect bomb gift:">Твой идеальный подарок-бомба:</h3>
+                        <div id="quiz-result" class="quiz-result-card"></div>
+                        <button class="btn btn-primary" id="restart-btn" data-lang-ru="Пройти еще раз! 🔄" data-lang-en="Try again! 🔄">Пройти еще раз! 🔄</button>
                     </div>
                 </div>
             </div>
         </section>
 
-    </main>
-            <!-- Секция 5: Контакты и Обратная форма -->
+        <!-- Форма обратной связи через Netlify Forms (Задание 6) -->
         <section id="contact" class="contact-section">
             <div class="container">
-                <h2 class="section-title">Связаться со мной</h2>
-                <p class="contact-subtitle">Остались вопросы или хотите сделать индивидуальный заказ? Напишите нам!</p>
-
-                <!-- Форма с Formspree -->
-                <form action="https://formspree.io/f/xqppeekl" method="POST" class="contact-form">
+                <h2 class="section-title" data-lang-ru="✉️ Напиши нам" data-lang-en="✉️ Write to us">✉️ Напиши нам</h2>
+                <!-- Добавлен атрибут netlify для автоматической обработки сервером -->
+                <form name="gifts-contact" method="POST" data-netlify="true" class="contact-form">
                     <div class="form-group">
-                        <label for="name" class="form-label">Ваше имя</label>
-                        <input type="text" id="name" name="name" class="form-input" placeholder="Имя" required>
+                        <label for="name" class="form-label" data-lang-ru="Твое имя:" data-lang-en="Your name:">Твое имя:</label>
+                        <input type="text" id="name" name="name" class="form-input" required>
                     </div>
-
                     <div class="form-group">
-                        <label for="email" class="form-label">E-mail для связи</label>
-                        <input type="email" id="email" name="email" class="form-input" placeholder="E-mail" required>
+                        <label for="email" class="form-label" data-lang-ru="E-mail:" data-lang-en="E-mail:">E-mail:</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
                     </div>
-
                     <div class="form-group">
-                        <label for="message" class="form-label">Ваше сообщение</label>
-                        <textarea id="message" name="message" class="form-input form-textarea" placeholder="Сообщение" required></textarea>
+                        <label for="message" class="form-label" data-lang-ru="Что хочешь спросить?" data-lang-en="What's your question?">Что хочешь спросить?</label>
+                        <textarea id="message" name="message" class="form-input form-textarea" required></textarea>
                     </div>
-
-                    <button type="submit" class="btn btn-secondary form-submit-btn">Отправить</button>
+                    <button type="submit" class="btn btn-secondary form-submit-btn" data-lang-ru="Запустить письмо! 🚀" data-lang-en="Send Letter! 🚀">Запустить письмо! 🚀</button>
                 </form>
-
-                <!-- Блок для отображения статуса отправки -->
                 <div id="form-status" class="form-status"></div>
             </div>
         </section>
+    </main>
 
-
-    <!-- Подвал сайта -->
-    <footer id="contacts" class="footer">
+    <footer class="footer">
         <div class="container footer-container">
-            <p>&copy; 2026 PresentPerfect. Все права защищены.</p>
-            <div class="footer-contacts">
-                <p>📞 Тел: +7 (999) 123-45-67</p>
-                <p>📍 Адрес: ул. Праздничная, д. 14</p>
-            </div>
+            <p>© 2026 GiftBoom!. Юху!</p>
         </div>
     </footer>
 
-    <!-- Подключаем файл скриптов -->
+    <!-- Модальное окно с деталями карточки (Задание 10) -->
+    <div id="product-modal" class="modalhidden">
+        <div class="modal-content">
+            <span class="close-modal-btn">&times;</span>
+            <h3 id="modal-title">Название подарка</h3>
+            <p id="modal-desc">Описание появится здесь</p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

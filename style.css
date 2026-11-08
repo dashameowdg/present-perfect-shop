@@ -1,6 +1,8 @@
-/* ==========================================================================
-   1. СБРОС СТИЛЕЙ И БАЗОВЫЕ НАСТРОЙКИ
-   ========================================================================== */
+/* Плавная прокрутка по якорям (Задание 2) */
+html {
+    scroll-behavior: smooth;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,10 +10,9 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f9f9f9;
+    font-family: 'Comic Sans MS', 'Segoe UI', sans-serif; /* Веселый шрифт */
+    background-color: #f0f2f5;
+    color: #23272a;
 }
 
 .container {
@@ -21,374 +22,122 @@ body {
     padding: 0 20px;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
 section {
-    padding: 80px 0;
+    padding: 70px 0;
 }
 
 .section-title {
     text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #7289da;
+    text-shadow: 2px 2px #ffeaa7;
+}
+
+.hidden { display: none !important; }
+.modalhidden { display: none; position: fixed; z-index: 200; left:0; top:0; width:100%; height:100%; background-color: rgba(0,0,0,0.6); align-items: center; justify-content: center; }
+
+/* 1. Кнопка "Наверх" (Задание 1) */
+.scroll-btn {
+    position: fixed;
+    bottom: 30px;
+    right: -100px; /* Скрыта по умолчанию */
+    z-index: 99;
     font-size: 2rem;
-    margin-bottom: 40px;
-    color: #2c3e50;
+    border: none;
+    outline: none;
+    background-color: #ff4757;
+    color: white;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+.scroll-btn.show { right: 30px; }
+.scroll-btn:hover { transform: scale(1.2) rotate(-15deg); }
 
-.hidden {
-    display: none !important;
-}
-
-/* ==========================================================================
-   2. ШАПКА САЙТА (ФЛЕКСЫ / FLEXBOX)
-   ========================================================================== */
+/* Яркая шапка */
 .header {
-    background-color: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    background: #7289da;
+    box-shadow: 0 4px 0px #5b73c7;
     position: sticky;
     top: 0;
     z-index: 100;
 }
+.header-container { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+.logo { font-size: 2rem; font-weight: 900; color: #fff; text-shadow: 2px 2px #ff4757; }
+.nav { display: flex; gap: 15px; align-items: center; }
+.nav-link { font-weight: bold; color: #fff; padding: 5px 10px; border-radius: 8px; transition: all 0.2s; }
+.nav-link:hover { background: #ff4757; transform: rotate(3deg); }
+.lang-btn { background: #ffeaa7; border: 2px solid #23272a; padding: 5px 10px; border-radius: 10px; cursor: pointer; font-weight: bold; }
 
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ff4757;
-}
-
-.nav {
-    display: flex;
-    gap: 20px;
-}
-
-.nav-link {
-    font-weight: 500;
-    color: #57606f;
-    transition: color 0.3s ease;
-}
-
-/* Эффект hover для ссылок */
-.nav-link:hover {
-    color: #ff4757;
-}
-
-/* ==========================================================================
-   3. ГЛАВНЫЙ ЭКРАН (HERO)
-   ========================================================================== */
+/* Сочный Hero экран */
 .hero {
-    background: linear-gradient(135deg, #ffeaa7 0%, #ff7675 100%);
+    background: linear-gradient(135deg, #ff7675 0%, #6c5ce7 100%);
     color: #fff;
     text-align: center;
-    padding: 100px 0;
+    padding: 120px 0;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
 }
+.hero-title { font-size: 3.5rem; margin-bottom: 20px; text-shadow: 3px 3px #ffeaa7; }
+.hero-subtitle { font-size: 1.5rem; margin-bottom: 30px; }
 
-.hero-title {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    font-weight: 800;
-}
+/* Кнопки */
+.btn { display: inline-block; padding: 15px 35px; border-radius: 50px; font-weight: bold; cursor: pointer; border: 3px solid #23272a; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 5px 0 #23272a; }
+.btn-primary { background: #ffeaa7; color: #23272a; }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 0 #23272a; background: #fff; }
+.btn-secondary { background: #ff7675; color: #fff; width: 100%; text-align: center; }
+.btn-secondary:hover { background: #ff6b81; transform: scale(1.03); }
 
-.hero-subtitle {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
+/* Поиск */
+.search-container { max-width: 500px; margin: 0 auto 40px; }
+.search-container input { width:100%; padding:15px; border-radius:30px; border:3px solid #23272a; font-size:1.1rem; font-family:inherit; box-shadow: 4px 4px 0 #23272a; }
 
-/* КНОПКИ */
-.btn {
-    display: inline-block;
-    padding: 12px 28px;
-    border-radius: 30px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: all 0.3s ease;
-}
-
-.btn-primary {
-    background-color: #fff;
-    color: #ff7675;
-}
-
-.btn-primary:hover {
-    background-color: #f1f2f6;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.btn-secondary {
-    background-color: #ff4757;
-    color: #fff;
-    width: 100%;
-}
-
-.btn-secondary:hover {
-    background-color: #ff6b81;
-}
-
-/* ==========================================================================
-   4. КАТАЛОГ ТОВАРОВ (ГРИДЫ / GRID)
-   ========================================================================== */
-.catalog-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-}
-
+/* Карточки с анимацией скролла (Задание 3) */
+.catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; }
 .product-card {
-    background-color: #fff;
-    border-radius: 15px;
-    padding: 20px;
-    position: relative;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    background: #fff; border: 3px solid #23272a; border-radius: 20px; padding: 25px; box-shadow: 6px 6px 0 #23272a;
+    transition: transform 0.3s, box-shadow 0.3s, opacity 0.6s ease-out;
 }
+.product-card:hover { transform: translateY(-5px) rotate(-1deg); box-shadow: 10px 10px 0 #23272a; }
 
-/* Эффект hover для карточек */
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
+/* Классы для анимации появления (Задание 3) */
+.scroll-animate { opacity: 0; transform: translateY(40px); }
+.scroll-animate.active { opacity: 1; transform: translateY(0); }
 
-.product-badge {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    background-color: #ff4757;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
+.product-badge { position: absolute; background: #ffeaa7; border: 2px solid #23272a; padding: 5px 12px; border-radius: 15px; font-weight: bold; font-size: 0.9rem; margin-top: -35px; margin-left: -10px; }
+.product-img-placeholder { font-size: 5rem; text-align: center; margin: 15px 0; }
+.product-title { margin-bottom: 10px; font-size: 1.4rem; }
+.product-price { font-size: 1.6rem; font-weight: 900; color: #ff4757; margin-bottom: 15px; }
 
-.product-img-placeholder {
-    background-color: #f1f2f6;
-    height: 200px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    color: #a4b0be;
-}
+/* 9. Слайдер без библиотек (Задание 9) */
+.slider-wrapper { display: flex; align-items: center; justify-content: center; position: relative; max-width: 800px; margin: 0 auto; }
+.slider-container { overflow: hidden; width: 100%; border: 3px solid #23272a; border-radius: 20px; background: #fff; box-shadow: 6px 6px 0 #23272a; }
+.slider-track { display: flex; transition: transform 0.4s ease-in-out; }
+.slide-item { min-width: 100%; padding: 40px; text-align: center; font-size: 1.8rem; font-weight: bold; background: #ffeaa7; color: #23272a; }
+.slide-item:nth-child(even) { background: #a8ffb2; }
+.slider-arrow { background: #7289da; border: 3px solid #23272a; font-size: 2rem; color: #fff; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; position: absolute; z-index: 10; box-shadow: 2px 2px 0 #23272a; }
+.prev-btn { left: -25px; } .next-btn { right: -25px; }
+.slider-arrow:hover { background: #ff4757; }
 
-.product-title {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: #2c3e50;
-}
+/* Квиз */
+.quiz-section { background: #a8ffb2; border-top: 4px dashed #23272a; border-bottom: 4px dashed #23272a; }
+.quiz-container { background: #fff; max-width: 600px; margin: 0 auto; padding: 40px; border-radius: 20px; border:3px solid #23272a; box-shadow: 8px 8px 0 #23272a; text-align: center; }
+.quiz-question { font-size: 1.6rem; font-weight: bold; margin-bottom: 25px; }
+.quiz-options { display: flex; flex-direction: column; gap: 15px; }
+.quiz-btn { background: #fff; border: 3px solid #23272a; padding: 15px; border-radius: 15px; font-size: 1.1rem; cursor: pointer; font-family: inherit; font-weight: bold; text-align: left; box-shadow: 3px 3px 0 #23272a; transition: all 0.2s; }
+.quiz-btn:hover { background: #ffeaa7; transform: translateX(5px); }
+.quiz-result-card { background: #ff7675; border: 3px solid #23272a; border-radius: 15px; padding: 25px; font-size: 1.5rem; font-weight: bold; color: #fff; margin: 20px 0; box-shadow: 4px 4px 0 #23272a; }
 
-.product-price {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #ff4757;
-    margin-bottom: 15px;
-}
+/* Форма */
+.contact-form { max-width: 500px; margin: 0 auto; background: #fff; border: 3px solid #23272a; padding: 30px; border-radius: 20px; box-shadow: 6px 6px 0 #23272a; }
+.form-group { margin-bottom: 20px; }
+.form-label { display: block; font-weight: bold; margin-bottom: 8px; }
+.form-input { width: 100%; padding: 12px; border: 3px solid #23272a; border-radius: 10px; font-size: 1rem; font-family: inherit; }
+.form-input:focus { outline: none; background: #fff0f2; }
+.form-textarea { min-height: 110px; resize: vertical; }
 
-/* ==========================================================================
-   5. СЕКЦИЯ ВИКТОРИНЫ (QUIZ)
-   ========================================================================== */
-.quiz-section {
-    background-color: #f1f2f6;
-}
-
-.quiz-container {
-    background-color: #fff;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    text-align: center;
-}
-
-.quiz-question {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 30px;
-    color: #2c3e50;
-}
-
-.quiz-options {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* Стили для интерактивных кнопок выбора */
-.quiz-btn {
-    background-color: #fff;
-    border: 2px solid #ced6e0;
-    padding: 15px 20px;
-    border-radius: 10px;
-    font-size: 1rem;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.2s ease;
-}
-
-.quiz-btn:hover {
-    border-color: #ff4757;
-    background-color: #fff0f2;
-}
-
-.quiz-result-card {
-    background-color: #fff0f2;
-    border: 2px dashed #ff4757;
-    border-radius: 15px;
-    padding: 25px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #ff4757;
-    margin: 20px 0 30px 0;
-}
-
-/* ==========================================================================
-   6. ПРЕИМУЩЕСТВА И ПОДВАЛ (ADVANTAGES & FOOTER)
-   ========================================================================== */
-.advantages-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    text-align: center;
-}
-
-.adv-item {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02);
-}
-
-.adv-item h3 {
-    margin-bottom: 15px;
-    color: #2c3e50;
-}
-
-.footer {
-    background-color: #2c3e50;
-    color: #a4b0be;
-    padding: 40px 0;
-    font-size: 0.9rem;
-}
-
-.footer-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.footer-contacts p {
-    margin-bottom: 5px;
-}
-/* ==========================================================================
-   6.5. СЕКЦИЯ КОНТАКТОВ И ФОРМЫ (CONTACT FORM)
-   ========================================================================== */
-.contact-section {
-    background-color: #fff;
-}
-
-.contact-subtitle {
-    text-align: center;
-    color: #57606f;
-    margin-bottom: 40px;
-    margin-top: -30px;
-}
-
-.contact-form {
-    max-width: 500px;
-    margin: 0 auto;
-    background-color: #f9f9f9;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.02);
-    border: 1px solid #eee;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #2c3e50;
-    font-size: 0.9rem;
-}
-
-.form-input {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #ced6e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: border-color 0.3s ease;
-    background-color: #fff;
-}
-
-/* Эффект при клике на поле ввода */
-.form-input:focus {
-    outline: none;
-    border-color: #ff4757;
-}
-
-.form-textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.form-submit-btn {
-    margin-top: 10px;
-}
-
-.form-status {
-    text-align: center;
-    margin-top: 20px;
-    font-weight: 600;
-    font-size: 1.1rem;
-}
-
-
-/* ==========================================================================
-   7. АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ ЭКРАНОВ (MEDIA QUERIES)
-   ========================================================================== */
-@media (max-width: 768px) {
-    .header-container {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .hero-title {
-        font-size: 2rem;
-    }
-
-    .quiz-container {
-        padding: 20px;
-    }
-
-    .footer-container {
-        flex-direction: column;
-        text-align: center;
-    }
-}
+/* 10. Модальное окно (Задание 10) */
+.modal-content { background-color: #fff; border: 4px solid #23272a; padding: 40px; border-radius: 25px; max-width: 500px; width: 90%; position: relative; box-shadow: 10px 10px 0 rgba(0,0,0,0.1); text-align: center; }
+.close-modal-btn { position: absolute; right: 20px; top: 10px; font-size: 2.5rem; cursor: pointer; color: #ff4757; font-weight: bold; }

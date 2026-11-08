@@ -1,29 +1,153 @@
-// Ждем, пока вся страница полностью загрузится
 document.addEventListener("DOMContentLoaded", () => {
     
     // ==========================================================================
-    // БАЗОВЫЕ ДАННЫЕ ДЛЯ ВИКТОРИНЫ (ВОПРОСЫ И ВАРИАНТЫ ОТВЕТОВ)
+    // 1. КНОПКА НАВЕРХ (Задание 1)
+    // ==========================================================================
+    const scrollTopBtn = document.getElementById("scroll-to-top");
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 400) {
+            scrollTopBtn.add("show");
+        } else {
+            scrollTopBtn.classList.remove("show");
+        }
+    });
+    scrollTopBtn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // ==========================================================================
+    // 3. АНИМАЦИЯ КАРТОЧЕК ПРИ СКРОЛЛЕ (Задание 3)
+    // ==========================================================================
+    const animateItems = document.querySelectorAll(".scroll-animate");
+    const checkScroll = () => {
+        animateItems.forEach(item => {
+            const itemTop = item.getBoundingClientRect().top;
+            if (itemTop < window.innerHeight * 0.85) {
+                item.classList.add("active");
+            }
+        });
+    };
+    window.addEventListener("scroll", checkScroll);
+    checkScroll(); // Запуск один раз при старте
+
+    // ==========================================================================
+    // 4 & 7. ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА С LOCALSTORAGE (Задание 4, 7)
+    // ==========================================================================
+    const langToggleBtn = document.getElementById("lang-toggle");
+    // Читаем язык из хранилища или ставим "ru" по умолчанию
+    let currentLang = localStorage.getItem("siteLang") || "ru";
+
+    const updateLanguageUI = (lang) => {
+        const textElements = document.querySelectorAll("[data-lang-ru]");
+        textElements.forEach(el => {
+            el.textContent = el.getAttribute(`data-lang-${lang}`);
+        });
+        
+        const placeholders = document.querySelectorAll("[data-lang-placeholder-ru]");
+        placeholders.forEach(el => {
+            el.setAttribute("placeholder", el.getAttribute(`data-lang-placeholder-${lang}`));
+        });
+
+        langToggleBtn.textContent = lang === "ru" ? "🇬🇧 EN" : "🇷🇺 RU";
+    };
+
+    langToggleBtn.addEventListener("click", () => {
+        currentLang = currentLang === "ru" ? "en" : "ru";
+        localStorage.setItem("siteLang", currentLang); // Сохраняем выбор
+        updateLanguageUI(currentLang);
+    });
+    updateLanguageUI(currentLang); // Применяем язык при загрузке
+
+    // ==========================================================================
+    // 8. ЖИВОЙ ФИЛЬТР/ПОИСК ПО КАТАЛОГУ (Задание 8)
+    // ==========================================================================
+    const searchInput = document.getElementById("catalog-search");
+    const productCards = document.querySelectorAll(".product-card");
+
+    searchInput.addEventListener("input", (e) => {
+        const value = e.target.value.toLowerCase().trim();
+        productCards.forEach(card => {
+            const title = card.getAttribute("data-title");
+            if (title.includes(value)) {
+                card.style.display = "flex";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    });
+
+    // ==========================================================================
+    // 9. СЛАЙДЕР БЕЗ БИБЛИОТЕК (Задание 9)
+    // ==========================================================================
+    const track = document.querySelector(".slider-track");
+    const slides = document.querySelectorAll(".slide-item");
+    const nextBtn = document.querySelector(".next-btn");
+    const prevBtn = document.querySelector(".prev-btn");
+    let slideIndex = 0;
+
+    const updateSlider = () => {
+        track.style.transform = `translateX(-${slideIndex * 100}%)`;
+    };
+
+    nextBtn.addEventListener("click", () => {
+        slideIndex = (slideIndex + 1) % slides.length;
+        updateSlider();
+    });
+
+    prevBtn.addEventListener("click", () => {
+        slideIndex = (slideIndex - 1 + slides.length) % slides.length;
+        updateSlider();
+    });
+
+    // ==========================================================================
+    // 10. МОДАЛЬНОЕ ОКНО С ДЕТАЛЯМИ (Задание 10)
+    // ==========================================================================
+    const modal = document.getElementById("product-modal");
+    const modalTitle = document.getElementById("modal-title");
+    const modalDesc = document.getElementById("modal-desc");
+    const closeModalBtn = document.querySelector(".close-modal-btn");
+    const openModalBtns = document.querySelectorAll(".open-modal-btn");
+
+    const modalData = {
+        cozy: { title: "Набор 'Уютный вечер'", desc: "Внутри: Ароматические свечи, кружка ручной работы, зефирки и натуральный премиум-какао. Идеально для зимних вечеров!" },
+        active: { title: "Сертификат на полет", desc: "Экстремальный полет на воздушном шаре или свидание на крыше небоскреба. Эмоции, которые запомнятся навсегда!" },
+        style: { title: "Именной термостакан", desc: "Качественная нержавеющая сталь, двойные стенки, удерживающие тепло до 12 часов, и индивидуальная гравировка любого имени!" }
+    };
+
+    openModalBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const giftKey = btn.getAttribute("data-gift");
+            modalTitle.textContent = modalData[giftKey].title;
+            modalDesc.textContent = modalData[giftKey].desc;
+            modal.style.display = "flex";
+        });
+    });
+
+    closeModalBtn.addEventListener("click", () => { modal.style.display = "none"; });
+    window.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
+
+    // ==========================================================================
+    // КОД ДЛЯ ВИКТОРИНЫ (КВИЗА)
     // ==========================================================================
     const quizData = [
         {
             question: "Кому вы выбираете подарок?",
             options: [
-                { text: "Второй половинке (романтичный)", weight: "love" },
-                { text: "Другу или коллеге (практичный/веселый)", weight: "friend" },
-                { text: "Родителям или близким (уютный)", weight: "family" }
+                { text: "Второй половинке 💝", weight: "love" },
+                { text: "Другу или коллеге 👾", weight: "friend" },
+                { text: "Родителям или близким 🏡", weight: "family" }
             ]
         },
         {
             question: "Каковы увлечения этого человека?",
             options: [
-                { text: "Любит отдых дома, книги и тепло", weight: "home" },
-                { text: "Постоянно в движении, ищет эмоции", weight: "active" },
-                { text: "Обожает красивые вещи и стиль", weight: "style" }
+                { text: "Любит отдых дома, плед и тепло ☕", weight: "home" },
+                { text: "Ищет приключения и эмоции 🚀", weight: "active" },
+                { text: "Обожает красивые вещи и стиль ✨", weight: "style" }
             ]
         }
     ];
 
-    // База готовых рекомендаций в зависимости от комбинаций ответов
     const recommendations = {
         "love-home": "Набор 'Уютный вечер' (свечи, плед, какао) 💝",
         "love-active": "Сертификат на полет на воздушном шаре или свидание на крыше 🚀",
@@ -36,11 +160,9 @@ document.addEventListener("DOMContentLoaded", () => {
         "family-style": "Шерстяной плед ручной работы или интерьерная ваза 🏺"
     };
 
-    // Переменные для отслеживания текущего состояния
     let currentQuestionIndex = 0;
-    let selectedWeights = []; // Сюда будем сохранять категории ответов
+    let selectedWeights = [];
 
-    // Находим элементы HTML, которыми будем управлять
     const questionText = document.getElementById("question-text");
     const optionsContainer = document.getElementById("options-container");
     const questionContainer = document.getElementById("question-container");
@@ -48,126 +170,44 @@ document.addEventListener("DOMContentLoaded", () => {
     const quizResult = document.getElementById("quiz-result");
     const restartBtn = document.getElementById("restart-btn");
 
-    // ==========================================================================
-    // ФУНКЦИИ ДЛЯ РАБОТЫ ВИКТОРИНЫ
-    // ==========================================================================
-
-    // Функция для отображения текущего вопроса
     function loadQuestion() {
-        // Очищаем старые кнопки с ответами
         optionsContainer.innerHTML = "";
-
-        // Проверяем, есть ли еще вопросы
         if (currentQuestionIndex < quizData.length) {
             const currentQuestion = quizData[currentQuestionIndex];
-            
-            // Меняем текст вопроса на странице
             questionText.textContent = currentQuestion.question;
 
-            // Создаем кнопки для каждого варианта ответа
             currentQuestion.options.forEach(option => {
                 const button = document.createElement("button");
                 button.classList.add("quiz-btn");
                 button.textContent = option.text;
-                
-                // Навешиваем событие клика на кнопку ответа
                 button.addEventListener("click", () => handleAnswer(option.weight));
-                
-                // Добавляем кнопку на страницу
                 optionsContainer.appendChild(button);
             });
         } else {
-            // Если вопросы кончились — показываем результат
             showResult();
         }
     }
 
-    // Функция обработки выбора ответа
     function handleAnswer(weight) {
-        selectedWeights.push(weight); // Запоминаем выбор пользователя
-        currentQuestionIndex++; // Переходим к следующему вопросу
-        loadQuestion(); // Перерисовываем экран
+        selectedWeights.push(weight);
+        currentQuestionIndex++;
+        loadQuestion();
     }
 
-    // Функция расчета и вывода результата
     function showResult() {
-        // Скрываем блок с вопросами
         questionContainer.classList.add("hidden");
-        // Показываем блок с результатом
         resultContainer.classList.remove("hidden");
-
-        // Составляем ключ (например: "love-home")
         const resultKey = `${selectedWeights[0]}-${selectedWeights[1]}`;
-        
-        // Берем подарок из базы или ставим стандартный, если что-то пошло не так
-        const finalGift = recommendations[resultKey] || "Универсальный подарочный сертификат 🎁";
-
-        // Записываем результат на страницу
-        quizResult.textContent = finalGift;
+        quizResult.textContent = recommendations[resultKey] || "Универсальный подарочный сертификат 🎁";
     }
 
-    // Функция сброса викторины (Пройти заново)
-    function restartQuiz() {
+    restartBtn.addEventListener("click", () => {
         currentQuestionIndex = 0;
         selectedWeights = [];
         resultContainer.classList.add("hidden");
         questionContainer.classList.remove("hidden");
         loadQuestion();
-    }
+    });
 
-    // Навешиваем клик на кнопку "Пройти заново"
-    restartBtn.addEventListener("click", restartQuiz);
-
-    // Запускаем первый вопрос при загрузке страницы
     loadQuestion();
-
-    // ==========================================================================
-    // НАСТРОЙКА РАБОТЫ ФОРМЫ (FORMSPREE ЧЕРЕЗ AJAX)
-    // ==========================================================================
-    const form = document.querySelector(".contact-form");
-    const formStatus = document.getElementById("form-status");
-
-    if (form) {
-        form.addEventListener("submit", async (event) => {
-            // Отменяем стандартную перезагрузку страницы при отправке
-            event.preventDefault(); 
-            
-            // Собираем данные из полей ввода
-            const data = new FormData(event.target);
-            
-            // Выводим сообщение о начале отправки
-            formStatus.style.color = "#2c3e50";
-            formStatus.textContent = "Отправка сообщения...";
-
-            // Отправляем данные на сервер Formspree в фоновом режиме
-            fetch(event.target.action, {
-                method: form.method,
-                body: data,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
-                    // Если всё ушло успешно — меняем текст на странице
-                    formStatus.style.color = "#2ed573";
-                    formStatus.textContent = "Спасибо! Ваше сообщение успешно отправлено! 🎁";
-                    form.reset(); // Очищаем поля формы
-                } else {
-                    // Если сервер вернул ошибку
-                    response.json().then(data => {
-                        if (data && data.errors) {
-                            formStatus.textContent = data.errors.map(error => error.message).join(", ");
-                        } else {
-                            formStatus.textContent = "Ой! Возникла проблема при отправке.";
-                        }
-                    });
-                }
-            }).catch(error => {
-                // Если пропал интернет или упал сервер
-                formStatus.style.color = "#ff4757";
-                formStatus.textContent = "Ошибка сети. Проверьте подключение.";
-            });
-        });
-    }
-
 });
