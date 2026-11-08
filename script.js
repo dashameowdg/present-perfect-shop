@@ -120,7 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Запускаем первый вопрос при загрузке страницы
     loadQuestion();
-        // ==========================================================================
+
+    // ==========================================================================
     // НАСТРОЙКА РАБОТЫ ФОРМЫ (FORMSPREE ЧЕРЕЗ AJAX)
     // ==========================================================================
     const form = document.querySelector(".contact-form");
@@ -154,8 +155,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                     // Если сервер вернул ошибку
                     response.json().then(data => {
-                        if (Object.hasOwn(data, 'errors')) {
-                            formStatus.textContent = data["errors"].map(error => error["message"]).join(", ");
+                        if (data && data.errors) {
+                            formStatus.textContent = data.errors.map(error => error.message).join(", ");
                         } else {
                             formStatus.textContent = "Ой! Возникла проблема при отправке.";
                         }
