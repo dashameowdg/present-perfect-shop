@@ -349,4 +349,50 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+        // ==========================================================================
+    // НАСТРОЙКА РАБОТЫ ФОРМЫ ПОД NETLIFY FORMS (БЕЗ ПЕРЕХОДА НА 404)
+    // ==========================================================================
+    const form = document.querySelector(".gifts-contact"); // Используем имя нашей формы
+    const formStatus = document.getElementById("form-status");
+
+    // Если форма не нашлась по классу, попробуем найти её по тегу form
+    const contactForm = form || document.querySelector("form");
+
+    if (contactForm) {
+        contactForm.addEventListener("submit", (event) => {
+            // Блокируем стандартную перезагрузку и уход на страницу 404
+            event.preventDefault(); 
+            
+            // Собираем данные формы
+            const myForm = event.target;
+            const formData = new FormData(myForm);
+            
+            // Показываем статус отправки
+            formStatus.style.color = "#2d3142";
+            formStatus.textContent = currentLang === "ru" ? "Отправка письма... 🚀" : "Sending letter... 🚀";
+
+            // Отправляем данные на сервера Netlify в фоновом режиме
+            fetch("/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams(formData).toString()
+            })
+            .then(() => {
+                // Если всё ушло успешно — выводим красивый текст прямо на странице
+                formStatus.style.color = "#2ed573";
+                formStatus.textContent = currentLang === "ru" 
+                    ? "Спасибо! Ваше письмо успешно улетело! 🎁" 
+                    : "Thank you! Your letter has been sent! 🎁";
+                myForm.reset(); // Очищаем поля формы
+            })
+            .catch((error) => {
+                // Если произошла ошибка сети
+                formStatus.style.color = "#ff4757";
+                formStatus.textContent = currentLang === "ru" 
+                    ? "Ой! Ошибка соединения. Проверьте интернет." 
+                    : "Oops! Connection error. Check your internet.";
+            });
+        });
+    }
+
 });
