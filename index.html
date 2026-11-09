@@ -23,8 +23,6 @@
                 <a href="#slider-section" class="nav-link" data-lang-ru="Тренды" data-lang-en="Trends">Тренды</a>
                 <a href="#quiz-section" class="nav-link" data-lang-ru="Подбор" data-lang-en="Quiz">Подбор</a>
                 <a href="#contact" class="nav-link" data-lang-ru="Контакты" data-lang-en="Contacts">Контакты</a>
-                <!-- Переключатель языка (Задание 7) -->
-                <button id="lang-toggle" class="lang-btn">🇬🇧 EN</button>
             </nav>
         </div>
     </header>
@@ -159,5 +157,38 @@
     </div>
 
     <script src="script.js"></script>
+
+    <!-- БЛОК НАСТРОЕК ДОСТУПНОСТИ -->
+    <!-- Кнопка-шестерёнка для открытия панели -->
+    <button id="settings-toggle" class="settings-btn" aria-label="Настройки">⚙️</button>
+
+    <!-- Сама всплывающая панель -->
+    <div id="settings-panel" class="settings-panel">
+        <h3 data-lang-ru="Доступность" data-lang-en="Accessibility">Доступность</h3>
+        
+        <!-- Изменение шрифта -->
+        <div class="settings-group">
+            <span data-lang-ru="Размер шрифта:" data-lang-en="Font size:">Размер шрифта:</span>
+            <div class="font-controls">
+                <button id="font-decrease" class="ctrl-btn">A-</button>
+                <button id="font-increase" class="ctrl-btn">A+</button>
+            </div>
+        </div>
+
+        <!-- Переключатель языка (перенесён сюда) -->
+        <div class="settings-group">
+            <span data-lang-ru="Язык сайта:" data-lang-en="Language:">Язык сайта:</span>
+            <button id="lang-toggle" class="lang-btn">🇬🇧 EN</button>
+        </div>
+
+        <!-- Скринридер (Озвучка) -->
+        <div class="settings-group">
+            <span data-lang-ru="Озвучка стрелочками:" data-lang-en="Arrow Screenreader:">Озвучка стрелочками:</span>
+            <button id="reader-toggle" class="ctrl-btn btn-off" data-lang-ru="Выкл" data-lang-en="Off">Выкл</button>
+        </div>
+        
+        <p class="reader-hint" data-lang-ru="💡 Включите озвучку и управляйте стрелочками ↑ ↓ на клавиатуре" data-lang-en="💡 Turn on and use ↑ ↓ arrows on keyboard">💡 Включите озвучку и управляйте стрелочками ↑ ↓ на клавиатуре</p>
+    </div>
+
 </body>
 </html>

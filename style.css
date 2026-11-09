@@ -502,3 +502,108 @@ transition: color 0.2s;
     border-radius: 14px; /* Красивые округлые края */
     margin-bottom: 20px;
 }
+/* ==========================================================================
+   ПАНЕЛЬ НАСТРОЕК И ДОСТУПНОСТИ
+   ========================================================================== */
+/* Кнопка-шестерёнка */
+.settings-btn {
+    position: fixed;
+    bottom: 40px;
+    left: 40px; /* Слева, чтобы не мешать ракете "Наверх" */
+    z-index: 101;
+    font-size: 1.5rem;
+    border: none;
+    outline: none;
+    background-color: #fff;
+    cursor: pointer;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    box-shadow: 0 8px 20px rgba(45, 49, 66, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.settings-btn:hover {
+    transform: rotate(45deg) scale(1.1);
+}
+
+/* Сама панель */
+.settings-panel {
+    position: fixed;
+    bottom: 110px;
+    left: -350px; /* Изначально спрятана за левым экраном */
+    width: 300px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 2px solid #ffe3e3;
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(45, 49, 66, 0.1);
+    z-index: 101;
+    transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+/* Класс, который JS будет добавлять для открытия */
+.settings-panel.open {
+    left: 40px;
+}
+
+.settings-panel h3 {
+    margin-bottom: 18px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border-bottom: 2px solid #fbf9f6;
+    padding-bottom: 8px;
+}
+
+.settings-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.font-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.ctrl-btn {
+    background: #fbf9f6;
+    border: 2px solid #e2e8f0;
+    padding: 6px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+.ctrl-btn:hover {
+    border-color: #ff7675;
+    color: #ff7675;
+}
+
+/* Стили для включенного/выключенного скринридера */
+#reader-toggle.btn-on {
+    background: #ff7675;
+    color: #fff;
+    border-color: #ff7675;
+}
+
+.reader-hint {
+    font-size: 0.8rem;
+    color: #4f5d75;
+    margin-top: 10px;
+    line-height: 1.3;
+}
+
+/* Класс визуальной подсветки читаемого текста для скринридера */
+.reader-highlight {
+    outline: 3px dashed #ff7675 !important;
+    outline-offset: 4px;
+    background-color: rgba(255, 118, 117, 0.1) !important;
+    transition: all 0.1s ease;
+}

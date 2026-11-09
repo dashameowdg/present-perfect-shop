@@ -214,4 +214,139 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     loadQuestion();
+
+        // ==========================================================================
+    // ПАНЕЛЬ ДОСТУПНОСТИ: ШРИФТЫ, СКРИНРИДЕР И УПРАВЛЕНИЕ СТРЕЛОЧКАМИ
+    // ==========================================================================
+    const settingsToggle = document.getElementById("settings-toggle");
+    const settingsPanel = document.getElementById("settings-panel");
+    const fontDecrease = document.getElementById("font-decrease");
+    const fontIncrease = document.getElementById("font-increase");
+    const readerToggle = document.getElementById("reader-toggle");
+
+    // Текущий размер шрифта (в процентах от стандартного)
+    let currentFontSize = 100;
+    // Флаг работы скринридера
+    let isReaderActive = false;
+    // Массив элементов для чтения на странице и индекс текущего
+    let readableElements = [];
+    let currentReaderIndex = -1;
+
+    // 1. Открытие/закрытие панели настроек по клику на шестерёнку
+    settingsToggle.addEventListener("click", () => {
+        settingsPanel.classList.toggle("open");
+    });
+
+    // 2. Изменение размера шрифта
+    fontIncrease.addEventListener("click", () => {
+        if (currentFontSize < 140) { // Ограничение максимума
+            currentFontSize += 10;
+            document.documentElement.style.fontSize = `${currentFontSize}%`;
+        }
+    });
+
+    fontDecrease.addEventListener("click", () => {
+        if (currentFontSize > 80) { // Ограничение минимума
+            currentFontSize -= 10;
+            document.documentElement.style.fontSize = `${currentFontSize}%`;
+        }
+    });
+
+    // 3. Логика Скринридера (Озвучка стрелочками)
+    // Функция сбора всех текстовых блоков на странице, которые стоит озвучить
+    function updateReadableElements() {
+        readableElements = Array.from(document.querySelectorAll("h1, h2, h3, p, .quiz-btn, .slide-item"));
+    }
+
+    // Функция озвучивания текста
+    function speakText(text) {
+        // Останавливаем старую озвучку, если она идёт
+        window.speechSynthesis.cancel();
+        
+        if (!text) return;
+        
+        const utterance = new SpeechSynthesisUtterance(text);
+        // Автоматически определяем язык озвучки на основе нашего переключателя языков
+        utterance.lang = currentLang === "ru" ? "ru-RU" : "en-US";
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // Включение / Выключение скринридера кнопкой
+    readerToggle.addEventListener("click", () => {
+        isReaderActive = !isReaderActive;
+        
+        if (isReaderActive) {
+            readerToggle.classList.remove("btn-off");
+            readerToggle.classList.add("btn-on");
+            readerToggle.setAttribute("data-lang-ru", "Вкл");
+            readerToggle.setAttribute("data-lang-en", "On");
+            readerToggle.textContent = currentLang === "ru" ? "Вкл" : "On";
+            
+            updateReadableElements();
+            currentReaderIndex = -1;
+            speakText(currentLang === "ru" ? "Режим чтения включен. Используйте стрелочки вверх и вниз." : "Reader mode activated. Use up and down arrows.");
+        } else {
+            readerToggle.classList.remove("btn-on");
+            readerToggle.classList.add("btn-off");
+            readerToggle.setAttribute("data-lang-ru", "Выкл");
+            readerToggle.setAttribute("data-lang-en", "Off");
+            readerToggle.textContent = currentLang === "ru" ? "Выкл" : "Off";
+            
+            // Сбрасываем подсветку и останавливаем голос
+            window.speechSynthesis.cancel();
+            if (readableElements[currentReaderIndex]) {
+                readableElements[currentReaderIndex].classList.remove("reader-highlight");
+            }
+            currentReaderIndex = -1;
+        }
+    });
+
+    // Перехват нажатия клавиш-стрелочек
+    window.addEventListener("keydown", (event) => {
+        if (!isReaderActive || readableElements.length === 0) return;
+
+        // Нажатие СТРЕЛОЧКИ ВНИЗ (переход к следующему тексту)
+        if (event.key === "ArrowDown") {
+            event.preventDefault(); // Запрещаем стандартный скролл страницы клавишей
+            
+            // Убираем старую подсветку
+            if (readableElements[currentReaderIndex]) {
+                readableElements[currentReaderIndex].classList.remove("reader-highlight");
+            }
+
+            currentReaderIndex++;
+            if (currentReaderIndex >= readableElements.length) {
+                currentReaderIndex = 0; // Зацикливаем в начало
+            }
+
+            // Добавляем новую подсветку и плавно докручиваем экран до элемента
+            const currentEl = readableElements[currentReaderIndex];
+            currentEl.classList.add("reader-highlight");
+            currentEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            
+            // Читаем текст
+            speakText(currentEl.textContent);
+        }
+
+        // Нажатие СТРЕЛОЧКИ ВВЕРХ (переход к предыдущему тексту)
+        if (event.key === "ArrowUp") {
+            event.preventDefault();
+            
+            if (readableElements[currentReaderIndex]) {
+                readableElements[currentReaderIndex].classList.remove("reader-highlight");
+            }
+
+            currentReaderIndex--;
+            if (currentReaderIndex < 0) {
+                currentReaderIndex = readableElements.length - 1; // Зацикливаем в конец
+            }
+
+            const currentEl = readableElements[currentReaderIndex];
+            currentEl.classList.add("reader-highlight");
+            currentEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            
+            speakText(currentEl.textContent);
+        }
+    });
+
 });
