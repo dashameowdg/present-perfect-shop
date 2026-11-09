@@ -607,3 +607,48 @@ transition: color 0.2s;
     background-color: rgba(255, 118, 117, 0.1) !important;
     transition: all 0.1s ease;
 }
+/* Стили для секции контактов и формы */
+.contact-section { 
+    background: #fbf9f6; 
+}
+.contact-form {
+    max-width: 490px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 10px 35px rgba(45, 49, 66, 0.04);
+}
+.form-group { 
+    margin-bottom: 24px; 
+}
+.form-label { 
+    display: block; 
+    font-size: 0.95rem; 
+    font-weight: 700; 
+    color: #4f5d75; 
+    margin-bottom: 8px; 
+}
+.form-input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+.form-input:focus {
+    outline: none;
+    border-color: #ff7675;
+}
+.form-textarea { 
+    min-height: 120px; 
+    resize: vertical; 
+}
+.form-status {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: 700;
+    font-size: 1.1rem;
+}

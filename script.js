@@ -350,49 +350,56 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
         // ==========================================================================
-    // НАСТРОЙКА РАБОТЫ ФОРМЫ ПОД NETLIFY FORMS (БЕЗ ПЕРЕХОДА НА 404)
+    // НАСТРОЙКА РАБОТЫ ФОРМЫ (FORMSPREE ЧЕРЕЗ AJAX — НА ПОЧТУ БЕЗ 404)
     // ==========================================================================
-    const form = document.querySelector(".gifts-contact"); // Используем имя нашей формы
+    const contactForm = document.querySelector(".contact-form") || document.querySelector("form");
     const formStatus = document.getElementById("form-status");
-
-    // Если форма не нашлась по классу, попробуем найти её по тегу form
-    const contactForm = form || document.querySelector("form");
 
     if (contactForm) {
         contactForm.addEventListener("submit", (event) => {
-            // Блокируем стандартную перезагрузку и уход на страницу 404
+            // Строго блокируем стандартное поведение и уход на 404 страницу
             event.preventDefault(); 
             
-            // Собираем данные формы
             const myForm = event.target;
             const formData = new FormData(myForm);
             
-            // Показываем статус отправки
+            // Выводим статус отправки в зависимости от выбранного языка
             formStatus.style.color = "#2d3142";
-            formStatus.textContent = currentLang === "ru" ? "Отправка письма... 🚀" : "Sending letter... 🚀";
+            formStatus.textContent = currentLang === "ru" ? "Отправка письма на почту... 🚀" : "Sending letter... 🚀";
 
-            // Отправляем данные на сервера Netlify в фоновом режиме
-            fetch("/", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams(formData).toString()
+            // Отправляем данные на сервера Formspree в фоновом режиме (AJAX)
+            fetch(myForm.action, {
+                method: myForm.method,
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
             })
-            .then(() => {
-                // Если всё ушло успешно — выводим красивый текст прямо на странице
-                formStatus.style.color = "#2ed573";
-                formStatus.textContent = currentLang === "ru" 
-                    ? "Спасибо! Ваше письмо успешно улетело! 🎁" 
-                    : "Thank you! Your letter has been sent! 🎁";
-                myForm.reset(); // Очищаем поля формы
+            .then(response => {
+                if (response.ok) {
+                    // Если письмо успешно улетело на Formspree
+                    formStatus.style.color = "#2ed573";
+                    formStatus.textContent = currentLang === "ru" 
+                        ? "Спасибо! Ваше письмо успешно отправлено на почту! 🎁" 
+                        : "Thank you! Your letter has been sent to mail! 🎁";
+                    myForm.reset(); // Полностью очищаем поля формы
+                } else {
+                    // Если сервис вернул ошибку
+                    formStatus.style.color = "#ff4757";
+                    formStatus.textContent = currentLang === "ru" 
+                        ? "Ой! Возникла проблема при отправке." 
+                        : "Oops! There was a problem sending.";
+                }
             })
             .catch((error) => {
-                // Если произошла ошибка сети
+                // Если пропал интернет
                 formStatus.style.color = "#ff4757";
                 formStatus.textContent = currentLang === "ru" 
-                    ? "Ой! Ошибка соединения. Проверьте интернет." 
-                    : "Oops! Connection error. Check your internet.";
+                    ? "Ошибка соединения. Проверьте интернет." 
+                    : "Connection error. Check your internet.";
             });
         });
     }
+
 
 });
