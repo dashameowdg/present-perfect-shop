@@ -652,3 +652,18 @@ transition: color 0.2s;
     font-weight: 700;
     font-size: 1.1rem;
 }
+
+/* ==========================================================================
+   УПРАВЛЕНИЕ БЕЗ МЫШКИ (KEYBOARD ACCESSIBILITY)
+   ========================================================================== */
+/* Красивая обводка для всех элементов при переключении кнопкой Tab */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex="0"]:focus-visible {
+    outline: 3px solid #ff7675; /* Наш фирменный розовый цвет */
+    outline-offset: 3px;
+    border-radius: 8px;
+    background-color: rgba(255, 118, 117, 0.05);
+}

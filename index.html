@@ -86,12 +86,15 @@
                 <div class="slider-wrapper">
                     <button class="slider-arrow prev-btn">‹</button>
                     <div class="slider-container">
+                        
+                        <!-- НАЙДИ ЭТУ СТРОКУ И ЗАМЕНИ БЛОКИ ВНУТРИ НЕЁ -->
                         <div class="slider-track">
-                            <div class="slide-item">🔮 Магический шар предсказаний</div>
-                            <div class="slide-item">👾 Настольный мини-автомат</div>
-                            <div class="slide-item">🍫 Огромный бокс киндеров</div>
-                            <div class="slide-item">🍕 Подушка в виде пиццы</div>
+                            <div class="slide-item" tabindex="0">🔮 Магический шар предсказаний</div>
+                            <div class="slide-item" tabindex="0">👾 Настольный мини-автомат</div>
+                            <div class="slide-item" tabindex="0">🍫 Огромный бокс киндеров</div>
+                            <div class="slide-item" tabindex="0">🍕 Подушка в виде пиццы</div>
                         </div>
+                        
                     </div>
                     <button class="slider-arrow next-btn">›</button>
                 </div>
@@ -150,7 +153,8 @@
     <!-- Модальное окно с деталями карточки (Задание 10) -->
     <div id="product-modal" class="modalhidden">
         <div class="modal-content">
-            <span class="close-modal-btn">&times;</span>
+            <!-- Было: <span class="close-modal-btn">&times;</span> -->
+            <button class="close-modal-btn" aria-label="Закрыть модальное окно">&times;</button>
             <h3 id="modal-title">Название подарка</h3>
             <p id="modal-desc">Описание появится здесь</p>
         </div>

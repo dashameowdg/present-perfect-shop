@@ -103,8 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
         updateSlider();
     });
 
-    // ==========================================================================
-    // 10. МОДАЛЬНОЕ ОКНО С ДЕТАЛЯМИ (Задание 10)
+        // ==========================================================================
+    // 10. МОДАЛЬНОЕ ОКНО С ДЕТАЛЯМИ И КЛАВИАТУРА (Задание 10)
     // ==========================================================================
     const modal = document.getElementById("product-modal");
     const modalTitle = document.getElementById("modal-title");
@@ -118,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
         style: { title: "Именной термостакан", desc: "Качественная нержавеющая сталь, двойные стенки, удерживающие тепло до 12 часов, и индивидуальная гравировка любого имени!" }
     };
 
+    // Навешиваем клик на кнопки карточек (тут мы закрываем все скобки правильно)
     openModalBtns.forEach(btn => {
         btn.addEventListener("click", () => {
             const giftKey = btn.getAttribute("data-gift");
@@ -125,8 +126,32 @@ document.addEventListener("DOMContentLoaded", () => {
             modalDesc.textContent = modalData[giftKey].desc;
             modal.style.display = "flex";
         });
+    }); // <-- Скобка закрытия forEach теперь на месте!
+
+    // Закрытие модалки по клавише Escape
+    window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.style.display === "flex") {
+            modal.style.display = "none";
+            const lastFocused = document.activeElement;
+            if (lastFocused) lastFocused.blur();
+        }
     });
 
+    // Управление слайдером с помощью стрелочек клавиатуры
+    window.addEventListener("keydown", (e) => {
+        if (document.activeElement.closest('.slider-wrapper')) {
+            if (e.key === "ArrowRight") {
+                slideIndex = (slideIndex + 1) % slides.length;
+                updateSlider();
+            }
+            if (e.key === "ArrowLeft") {
+                slideIndex = (slideIndex - 1 + slides.length) % slides.length;
+                updateSlider();
+            }
+        }
+    });
+
+    // Обычное закрытие по клику на крестик и по фону
     closeModalBtn.addEventListener("click", () => { modal.style.display = "none"; });
     window.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
 
